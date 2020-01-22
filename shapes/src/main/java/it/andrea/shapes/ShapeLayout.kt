@@ -62,41 +62,41 @@ open class ShapeLayout : FrameLayout {
 
 
     private fun init(context: Context, attrs: AttributeSet? = null) {
-        clipPaint.isAntiAlias = true
+        clipPaint.apply {
+            isAntiAlias = true
+            this@ShapeLayout.isDrawingCacheEnabled = true
+            this@ShapeLayout.setWillNotDraw(false)
+            color = Color.BLUE
+            style = Paint.Style.FILL
+            strokeWidth = 1f
 
-        isDrawingCacheEnabled = true
-
-        setWillNotDraw(false)
-
-        clipPaint.color = Color.BLUE
-        clipPaint.style = Paint.Style.FILL
-        clipPaint.strokeWidth = 1f
-
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) {
-            clipPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
-            setLayerType(
-                View.LAYER_TYPE_SOFTWARE,
-                clipPaint
-            ) //Only works for software layers
-        } else {
-            clipPaint.xfermode = pdMode
-            setLayerType(
-                View.LAYER_TYPE_SOFTWARE,
-                null
-            ) //Only works for software layers
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) {
+                xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
+                this@ShapeLayout.setLayerType(
+                    View.LAYER_TYPE_SOFTWARE,
+                    clipPaint
+                ) //Only works for software layers
+            } else {
+                xfermode = pdMode
+                this@ShapeLayout.setLayerType(
+                    View.LAYER_TYPE_SOFTWARE,
+                    null
+                ) //Only works for software layers
+            }
         }
 
-        if (attrs != null) {
-            val attributes =
-                context.obtainStyledAttributes(attrs, R.styleable.ShapeLayout)
-            if (attributes.hasValue(R.styleable.ShapeLayout_drawableId)) {
-                val resourceId =
-                    attributes.getResourceId(R.styleable.ShapeLayout_drawableId, -1)
-                if (-1 != resourceId) {
-                    setDrawable(resourceId)
+        attrs?.let {
+            context.obtainStyledAttributes(attrs, R.styleable.ShapeLayout).apply {
+                if (hasValue(R.styleable.ShapeLayout_drawableId)) {
+                    getResourceId(R.styleable.ShapeLayout_drawableId, -1)
+                        .let { resourceId ->
+                            if (-1 != resourceId) {
+                                setDrawable(resourceId)
+                            }
+                        }
+                    recycle()
                 }
             }
-            attributes.recycle()
         }
     }
 
@@ -142,7 +142,9 @@ open class ShapeLayout : FrameLayout {
         }
         if (requiresBitmap()) {
             clipPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
-            canvas.drawBitmap(clipBitmap!!, 0f, 0f, clipPaint)
+            clipBitmap?.let {
+                canvas.drawBitmap(it, 0f, 0f, clipPaint)
+            }
         } else {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) {
                 canvas.drawPath(clipPath, clipPaint)
@@ -165,39 +167,35 @@ open class ShapeLayout : FrameLayout {
             1f * getHeight(),
             Path.Direction.CW
         )
-        if (clipManager != null) {
-            if (width > 0 && height > 0) {
-                clipManager.setupClipLayout(width, height)
-                clipPath.reset()
-                clipPath.set(clipManager.createMask(width, height))
-                if (requiresBitmap()) {
-                    if (clipBitmap != null) {
-                        clipBitmap!!.recycle()
-                    }
-                    clipBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                    val canvas = Canvas(clipBitmap!!)
-                    if (drawable != null) {
-                        drawable!!.setBounds(0, 0, width, height)
-                        drawable!!.draw(canvas)
-                    } else {
-                        canvas.drawPath(clipPath, clipManager.getPaint())
-                    }
-                }
-                //invert the path for android P
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) {
-                    val success =
-                        rectView.op(clipPath, Path.Op.DIFFERENCE)
-                }
-                //this needs to be fixed for 25.4.0
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(
-                        this
-                    ) > 0f
-                ) {
-                    try {
-                        outlineProvider = outlineProvider
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
+        if (width > 0 && height > 0) {
+            clipManager.setupClipLayout(width, height)
+            clipPath.reset()
+            clipPath.set(clipManager.createMask(width, height))
+            if (requiresBitmap()) {
+                clipBitmap?.recycle()
+                val canvas =
+                    Canvas(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also {
+                        clipBitmap = it
+                    })
+                drawable?.let {
+                    it.setBounds(0, 0, width, height)
+                    it.draw(canvas)
+                } ?: canvas.drawPath(clipPath, clipManager.getPaint())
+            }
+            //invert the path for android P
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) {
+                val success =
+                    rectView.op(clipPath, Path.Op.DIFFERENCE)
+            }
+            //this needs to be fixed for 25.4.0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(
+                    this
+                ) > 0f
+            ) {
+                try {
+                    outlineProvider = outlineProvider
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }
@@ -212,7 +210,7 @@ open class ShapeLayout : FrameLayout {
                 view: View,
                 outline: Outline
             ) {
-                if (clipManager != null && !isInEditMode) {
+                if (!isInEditMode) {
                     val shadowConvexPath = clipManager.getShadowConvexPath()
                     if (shadowConvexPath != null) {
                         try {
