@@ -15,13 +15,13 @@ import kotlin.math.abs
 class ArchLayout : ShapeLayout {
 
     @ArcPosition
-    var arcPosition = POSITION_TOP
+    var archPosition = POSITION_TOP
         set(value) {
             field = value
             requiresShapeUpdate()
         }
 
-    var arcHeightPx = 0f
+    var archHeightPx = 0f
         set(value) {
             field = value
             requiresShapeUpdate()
@@ -46,12 +46,12 @@ class ArchLayout : ShapeLayout {
     private fun init(context: Context, attrs: AttributeSet? = null) {
         attrs?.let {
             context.obtainStyledAttributes(attrs, R.styleable.ArchLayout).apply {
-                arcHeightPx = getDimensionPixelSize(
+                archHeightPx = getDimensionPixelSize(
                     R.styleable.ArchLayout_arch_height,
-                    arcHeightPx.toInt()
+                    archHeightPx.toInt()
                 ).toFloat()
 
-                arcPosition = getInteger(R.styleable.ArchLayout_arch_position, arcPosition)
+                archPosition = getInteger(R.styleable.ArchLayout_arch_position, archPosition)
 
                 recycle()
             }
@@ -61,9 +61,9 @@ class ArchLayout : ShapeLayout {
             override fun createClipPath(width: Int, height: Int): Path {
                 return Path().apply {
                     val isCropInside = getCropDirection() == CROP_INSIDE
-                    val arcHeightAbs = abs(arcHeightPx)
+                    val arcHeightAbs = abs(archHeightPx)
 
-                    when (arcPosition) {
+                    when (archPosition) {
                         POSITION_BOTTOM -> {
                             if (isCropInside) {
                                 moveTo(0f, 0f)
@@ -168,19 +168,19 @@ class ArchLayout : ShapeLayout {
     }
 
     fun getCropDirection(): Int {
-        return if (arcHeightPx > 0) {
+        return if (archHeightPx > 0) {
             CROP_OUTSIDE
         } else {
             CROP_INSIDE
         }
     }
 
-    fun getArcHeightDp(): Float {
-        return pxToDp(arcHeightPx)
+    fun getArchHeightDp(): Float {
+        return pxToDp(archHeightPx)
     }
 
-    fun setArcHeightDp(arcHeight: Float) {
-        arcHeightPx = dpToPx(arcHeight)
+    fun setArchHeightDp(archHeight: Float) {
+        archHeightPx = dpToPx(archHeight)
     }
 
 
