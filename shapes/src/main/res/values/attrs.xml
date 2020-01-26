@@ -15,4 +15,8 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="ParallelogramLayout">
+        <attr name="height_projection" format="dimension" />
+    </declare-styleable>
+
 </resources>

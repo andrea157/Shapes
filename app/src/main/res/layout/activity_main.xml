@@ -31,4 +31,36 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <it.andrea.shapes.layouts.ParallelogramLayout
+        android:id="@+id/p_1"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        app:height_projection="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/p_2"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent" />
+
+    </it.andrea.shapes.layouts.ParallelogramLayout>
+
+    <it.andrea.shapes.layouts.ParallelogramLayout
+        android:id="@+id/p_2"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        app:height_projection="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/p_1">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent" />
+
+    </it.andrea.shapes.layouts.ParallelogramLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
