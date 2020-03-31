@@ -17,6 +17,10 @@
 
     <declare-styleable name="ParallelogramLayout">
         <attr name="height_projection" format="dimension" />
+        <attr name="disable_projection" format="enum">
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+        </attr>
     </declare-styleable>
 
 </resources>
