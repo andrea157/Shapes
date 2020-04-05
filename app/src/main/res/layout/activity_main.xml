@@ -10,6 +10,7 @@
         android:id="@+id/img_poster"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_marginTop="32dp"
         app:arch_height="26dp"
         app:arch_position="bottom"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,25 +21,33 @@
             android:scaleType="centerCrop"
             android:src="#FF5722" />
 
+        <ToggleButton
+            android:id="@+id/btn_target_0"
+            android:layout_width="128dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_launcher_foreground"
+            android:textOff="@null"
+            android:textOn="@null" />
+
+        <ToggleButton
+            android:id="@+id/btn_target_1"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@drawable/ic_launcher_foreground"
+            android:textOff="@null"
+            android:textOn="@null" />
+
     </it.andrea.shapes.layouts.ArchLayout>
 
-    <ToggleButton
-        android:id="@+id/btn_target"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_launcher_foreground"
-        android:textOff="@null"
-        android:textOn="@null"
-        app:layout_constraintBottom_toBottomOf="@id/holeView"
-        app:layout_constraintEnd_toEndOf="@id/holeView"
-        app:layout_constraintStart_toStartOf="@id/holeView"
-        app:layout_constraintTop_toTopOf="@id/holeView" />
 
     <it.andrea.shapes.views.HoleView
         android:id="@+id/holeView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         app:color_fill="#80000000"
+        app:layout_constraintBottom_toBottomOf="@id/img_poster"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

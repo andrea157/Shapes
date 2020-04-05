@@ -10,9 +10,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btn_target.setOnCheckedChangeListener { compoundButton, b ->
+        btn_target_0.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
-                holeView.animateHole(viewToShow = btn_target)
+                holeView.animateHole(viewToShow = btn_target_0)
+            }else{
+                holeView.removeAllHole()
+            }
+        }
+
+        btn_target_1.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                holeView.animateHole(viewToShow = btn_target_1)
             }else{
                 holeView.removeAllHole()
             }
