@@ -23,4 +23,12 @@
         </attr>
     </declare-styleable>
 
+
+    <declare-styleable name="HoleView">
+        <attr name="color_fill" format="color" />
+        <attr name="anim_duration" format="integer" />
+        <attr name="default_size_offset_percent" format="float" />
+        <attr name="default_switch_percent" format="float" />
+    </declare-styleable>
+
 </resources>
