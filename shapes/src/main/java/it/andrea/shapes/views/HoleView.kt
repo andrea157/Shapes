@@ -144,6 +144,7 @@ class HoleView : View {
         reverse: Boolean = false
     ) {
         //TODO Check viewToShow id valid....
+        //TODO Check for no fullscreen....
         this.viewToShow = viewToShow
         this.currentSizeOffsetPercent = sizeOffsetPercent
         this.currentSwitchPercent = switchPercent
@@ -165,11 +166,10 @@ class HoleView : View {
     ) {
 
         val coordinates = IntArray(2)
-        viewToShow.getLocationOnScreen(coordinates)
-        val centerX = coordinates[0].toFloat()//viewToShow.x
-        val centerY = coordinates[1].toFloat()//viewToShow.y
-        val halfX = viewToShow.width / 2
-        val halfY = viewToShow.height / 2
+        viewToShow.getLocationInWindow(coordinates)
+
+        val centerX = coordinates[0].toFloat() + viewToShow.width / 2
+        val centerY = coordinates[1].toFloat() + viewToShow.height / 2
 
         val startValue: Float
         val endValue: Float
@@ -190,8 +190,8 @@ class HoleView : View {
                         paintWithHole = Paint(Paint.ANTI_ALIAS_FLAG).apply {
                             style = Paint.Style.FILL
                             shader = RadialGradient(
-                                centerX + halfX,
-                                centerY - halfY, currentRadius,
+                                centerX,
+                                centerY, currentRadius,
                                 intArrayOf(
                                     Color.TRANSPARENT,
                                     Color.TRANSPARENT,
@@ -217,12 +217,12 @@ class HoleView : View {
     private fun animateRoundRectHole(duration: Long, viewToShow: View, reverse: Boolean = false) {
 
         val coordinates = IntArray(2)
-        viewToShow.getLocationOnScreen(coordinates)
+        viewToShow.getLocationInWindow(coordinates)
 
         val halfX = (viewToShow.width / 2)
         val halfY = (viewToShow.height / 2)
-        val centerX = coordinates[0].toFloat() + halfX//viewToShow.x + halfX
-        val centerY = coordinates[1].toFloat() - (viewToShow.height * 0.75f)//viewToShow.y + halfY
+        val centerX = coordinates[0].toFloat() + halfX
+        val centerY = coordinates[1].toFloat() + halfY
         val radius = min(halfX, halfY).toFloat()
 
         val startValue: Float

@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         btn_target_0.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 holeView.animateHole(viewToShow = btn_target_0)
-            }else{
+            } else {
                 holeView.removeAllHole()
             }
         }
@@ -21,7 +21,23 @@ class MainActivity : AppCompatActivity() {
         btn_target_1.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 holeView.animateHole(viewToShow = btn_target_1)
-            }else{
+            } else {
+                holeView.removeAllHole()
+            }
+        }
+
+        btn_target_2.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                holeView.animateHole(viewToShow = btn_target_2)
+            } else {
+                holeView.removeAllHole()
+            }
+        }
+
+        btn_target_3.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                holeView.animateHole(viewToShow = btn_target_3)
+            } else {
                 holeView.removeAllHole()
             }
         }
